@@ -42,8 +42,8 @@ add_executable(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/../common/dji_linux_helpers.cpp
         ${SOURCE_FILES}
         main.cpp
-        mission_sample.cpp csv_reader.hpp)
-target_compile_options(${PROJECT_NAME} PRIVATE -std=c++17)
+        mission_sample.cpp)
+#target_compile_options(${PROJECT_NAME} PRIVATE -std=c++17)
 
 if(WAYPT2_CORE)
 #waypoint v2
@@ -51,8 +51,8 @@ if(WAYPT2_CORE)
 add_executable(djiosdk-waypoint-v2-sample
         ${SOURCE_FILES}
         ${CMAKE_CURRENT_SOURCE_DIR}/../../../core/src/waypoint_v2_sample.cpp
-        waypoint_v2_main.cpp mission_sample.cpp csv_reader.hpp)
-target_compile_options(djiosdk-waypoint-v2-sample PRIVATE -std=c++17)
+        waypoint_v2_main.cpp mission_sample.cpp)
+#target_compile_options(djiosdk-waypoint-v2-sample PRIVATE -std=c++17)
 endif(WAYPT2_CORE)
 
 #add_executable(csv csv_reader.cpp)

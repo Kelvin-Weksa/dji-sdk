@@ -42,6 +42,8 @@
 
 // Helpers
 #include <dji_linux_helpers.hpp>
+#include "csv_reader.hpp"
+void setWaypointFromCSVRow(WayPointInitSettings* fdata,std::string&& filename, unsigned rowNum);
 
 // Subscription not supported in Matrice 100
 bool setUpSubscription(DJI::OSDK::Vehicle* vehicle, int responseTimeout);

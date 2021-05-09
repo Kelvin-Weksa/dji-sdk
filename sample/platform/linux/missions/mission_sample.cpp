@@ -33,8 +33,16 @@
 #include "mission_sample.hpp"
 #include "osdkosal_linux.h"
 
+
 using namespace DJI::OSDK;
 using namespace DJI::OSDK::Telemetry;
+
+
+std::istream& operator >>(std::istream& str, CSVRow& data)
+{
+    data.readNextRow(str);
+    return str;
+}  
 
 bool
 setUpSubscription(DJI::OSDK::Vehicle* vehicle, int responseTimeout)
@@ -120,7 +128,7 @@ runWaypointMission(Vehicle* vehicle, uint8_t numWaypoints, int responseTimeout)
 
   // Waypoint Mission : Initialization
   WayPointInitSettings fdata;
-  setWaypointInitDefaults(&fdata);
+  setWaypointFromCSVRow(&fdata, "SampleWaypoints.csv", 2);
 
   fdata.indexNumber =
     numWaypoints + 1; // We add 1 to get the aircarft back to the start.
@@ -207,6 +215,29 @@ setWaypointInitDefaults(WayPointInitSettings* fdata)
   fdata->longitude      = 0;
   fdata->altitude       = 0;
 }
+
+void
+setWaypointFromCSVRow(WayPointInitSettings* fdata,std::string&& filename, unsigned rowNum)
+{
+  setWaypointInitDefaults(fdata);
+  std::ifstream file(filename);
+  CSVRow row;
+  for (int i = 0; i < rowNum; ++i)
+  {
+    file >> row;
+  }
+  if (file>>row)
+  {
+    fdata->latitude   = std::stof(std::string{row[1]});
+    fdata->longitude  = std::stof(std::string{row[2]});
+    fdata->altitude   = std::stof(std::string{row[3]});
+  }
+  else
+  {
+
+  }
+}
+
 
 std::vector<DJI::OSDK::WayPointSettings>
 createWaypoints(DJI::OSDK::Vehicle* vehicle, int numWaypoints,
